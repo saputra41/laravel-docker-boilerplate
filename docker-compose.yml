@@ -56,15 +56,6 @@ services:
     networks:
       - laravel
 
-  redis:
-    image: redis:alpine
-    container_name: redis
-    restart: unless-stopped
-    ports:
-      - 6379:6379
-    networks:
-      - laravel
-
   composer:
     build:
       context: ./dockerfiles
@@ -85,7 +76,7 @@ services:
       - laravel
 
   npm:
-    image: node:13.7
+    image: node:20.10.0
     container_name: npm
     volumes:
       - ./:/var/www/html
