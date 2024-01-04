@@ -14,7 +14,7 @@ services:
         - USER=${USER:-youruser}
     container_name: nginx
     ports:
-      - 80:80
+      - 8080:80
     volumes:
       - ./:/var/www/html:delegated
     depends_on:
@@ -25,7 +25,7 @@ services:
       - laravel
 
   mysql:
-    image: mariadb:10.6
+    image: mariadb:10.11.6
     container_name: mysql
     restart: unless-stopped
     tty: true
@@ -55,24 +55,24 @@ services:
     networks:
       - laravel
 
-  composer:
-    build:
-      context: ./dockerfiles
-      dockerfile: composer.dockerfile
-      args:
-        - UID=${UID:-1000}
-        - GID=${GID:-1000}
-        - USER=${USER:-youruser}
-    container_name: composer
-    volumes:
-      - ./:/var/www/html
-    working_dir: /var/www/html
-    depends_on:
-      - php
-    user: ${USER:-youruser}
-    entrypoint: ['composer', '--ignore-platform-reqs']
-    networks:
-      - laravel
+  # composer:
+  #   build:
+  #     context: ./dockerfiles
+  #     dockerfile: composer.dockerfile
+  #     args:
+  #       - UID=${UID:-1000}
+  #       - GID=${GID:-1000}
+  #       - USER=${USER:-youruser}
+  #   container_name: composer
+  #   volumes:
+  #     - ./:/var/www/html
+  #   working_dir: /var/www/html
+  #   depends_on:
+  #     - php
+  #   user: ${USER:-youruser}
+  #   entrypoint: ['composer']
+  #   networks:
+  #     - laravel
 
   npm:
     image: node:20.10.0
@@ -87,23 +87,23 @@ services:
     networks:
       - laravel
 
-  artisan:
-    build:
-      context: ./dockerfiles
-      dockerfile: php.dockerfile
-      args:
-        - UID=${UID:-1000}
-        - GID=${GID:-1000}
-        - USER=${USER:-youruser}
-    container_name: artisan
-    volumes:
-      - ./:/var/www/html:delegated
-    depends_on:
-      - mysql
-    working_dir: /var/www/html
-    entrypoint: ['php', '/var/www/html/artisan']
-    networks:
-      - laravel
+  # artisan:
+  #   build:
+  #     context: ./dockerfiles
+  #     dockerfile: php.dockerfile
+  #     args:
+  #       - UID=${UID:-1000}
+  #       - GID=${GID:-1000}
+  #       - USER=${USER:-youruser}
+  #   container_name: artisan
+  #   volumes:
+  #     - ./:/var/www/html:delegated
+  #   depends_on:
+  #     - mysql
+  #   working_dir: /var/www/html
+  #   entrypoint: ['php', '/var/www/html/artisan']
+  #   networks:
+  #     - laravel
 
   mailhog:
     image: mailhog/mailhog:latest
